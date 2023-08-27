@@ -50,7 +50,7 @@ const createMovie = (req, res, next) => {
     });
 };
 
-const deleteMovie = (req, res, next) => Movie.findById(req.params.movieId)
+const deleteMovie = (req, res, next) => Movie.findById(req.params._id)
   .then((movie) => {
     if (!movie) {
       throw new NotFoundError('Фильм не найден');
@@ -58,7 +58,7 @@ const deleteMovie = (req, res, next) => Movie.findById(req.params.movieId)
     if (!movie.owner.equals(req.user._id)) {
       return next(new ForbiddenError('Вы не можете удалять фильмы других пользователей'));
     }
-    return Movie.deleteOne()
+    return movie.deleteOne()
       .then(() => res.send({ message: 'Фильм удален' }))
       .catch(next);
   })

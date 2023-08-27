@@ -26,7 +26,7 @@ module.exports.validationUserId = celebrate({
 module.exports.validationUpdateProfile = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
-    email: Joi.string().min(2).max(30),
+    email: Joi.string().required().email(),
   }),
 });
 
@@ -48,6 +48,6 @@ module.exports.validationCreateMovie = celebrate({
 
 module.exports.validationDeleteMovie = celebrate({
   params: Joi.object().keys({
-    movieId: Joi.string().required().length(24).hex(),
+    _id: Joi.string().required().length(24).hex(),
   }),
 });

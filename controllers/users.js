@@ -75,11 +75,12 @@ const updateUser = (req, res, next) => {
     .orFail()
     .then((user) => res.send(user))
     .catch((err) => {
+      if (err.code === 11000) return next(new ConflictError('Пользователь уже существует'));
       if (err.name === 'DocumentNotFoundError') {
         return next(new NotFoundError('Пользователь не найден'));
       }
       if (err.name === 'ValidationError') {
-        return next(new BadRequestError('Переданы некорректные данные профиля'));
+        return next(new BadRequestError('Переданы некорректные данные пользователя'));
       }
       return next(err);
     });
