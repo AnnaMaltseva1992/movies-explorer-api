@@ -8,7 +8,10 @@ const getMovies = (req, res, next) => {
   Movie
     .find({})
     .populate('owner')
-    .then((movies) => res.send(movies))
+    .then((movies) => {
+      const userMovies = movies.filter((movie) => movie.owner.id === req.user._id);
+      res.send(userMovies);
+    })
     .catch(next);
 };
 

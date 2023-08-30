@@ -18,24 +18,16 @@ const handleErrors = require('./middlewares/handleErrors');
 
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
+const { PORT, MONGO_URL, LIMITER_CONFIG } = require('./utils/config');
+
 const app = express();
 app.use(cors());
-
-const {
-  MONGO_URL = 'mongodb://127.0.0.1:27017/bitfilmsdb',
-  PORT = 3000,
-} = process.env;
 
 mongoose.connect(MONGO_URL, {
   useNewUrlParser: true,
 });
 
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
-  standardHeaders: true,
-  legacyHeaders: false,
-});
+const limiter = rateLimit(LIMITER_CONFIG);
 
 app.use(limiter);
 
